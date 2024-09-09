@@ -27,17 +27,22 @@ def print_file_contents(path, exempt_folders, exempt_files, file_handle):
         for f in files:
             if f not in exempt_files:
                 file_path = os.path.join(root, f)
-                file_handle.write(f'File: {file_path}\n')
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    contents = file.read()
-                    file_handle.write('--- File Contents Start ---\n')
-                    file_handle.write(contents + '\n')
-                    file_handle.write('--- File Contents End ---\n\n')
+                try:
+                    file_handle.write(f'File: {file_path}\n')
+                    with open(file_path, 'r', encoding='utf-8') as file:
+                        contents = file.read()
+                        file_handle.write('--- File Contents Start ---\n')
+                        file_handle.write(contents + '\n')
+                        file_handle.write('--- File Contents End ---\n\n')
+                except Exception as e:
+                    file_handle.write(f'Failed to read {file_path}: {e}\n\n')
 
 
 # Exempt directories and files
 exempt_folders = [
     'node_modules',
+    '.git',
+    'image',
 ]
 exempt_files = [
     '.DS_Store',

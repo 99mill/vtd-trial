@@ -195,22 +195,20 @@ File: ../../vtd-trial\public\index.html
 --- File Contents Start ---
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="VTD Visual Tool" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -219,12 +217,13 @@ File: ../../vtd-trial\public\index.html
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
+  <title>React App</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -234,9 +233,9 @@ File: ../../vtd-trial\public\index.html
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
-</html>
+</body>
 
+</html>
 --- File Contents End ---
 
 File: ../../vtd-trial\src\App.css
@@ -295,9 +294,7 @@ function App() {
   useEffect(() => {
     const readExcel = async () => {
       try {
-        console.log('Starting to read Excel file');
         const response = await fetch('/wine_data.xlsx');
-        console.log('Fetch response:', response);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -334,18 +331,14 @@ function App() {
           return acc;
         }, {});
 
-        console.log('Processed data:', processedData);
         setData(processedData);
       } catch (error) {
-        console.error('Error reading Excel file:', error);
         setError('Error reading Excel file. Please check if the file exists in the public folder and try again.');
       }
     };
 
     readExcel();
   }, []);
-
-  console.log('Rendering App, data:', data);
 
   if (error) {
     return <div className="error">{error}</div>;
@@ -496,10 +489,13 @@ File: ../../vtd-trial\src\components\ParentSKUSection.css
 }
 
 .sku-section h3 {
-    width: 150px;
+    width: 100px;
     margin: 0;
     padding-top: 1cqmax;
+    padding-left: 50px;
+    ;
     flex-shrink: 0;
+    font-style: italic;
 }
 
 .timeline-container {
@@ -533,97 +529,224 @@ File: ../../vtd-trial\src\components\Timeline.css
 --- File Contents Start ---
 .timeline {
     width: 100%;
-    height: 100px;
     margin-bottom: 20px;
     min-width: 300px;
+}
+
+.chart-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.chart-label {
+    width: 60px;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+.chart-container {
+    width: 100%;
+    height: 150px;
+    flex-grow: 1;
 }
 --- File Contents End ---
 
 File: ../../vtd-trial\src\components\Timeline.js
 --- File Contents Start ---
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    TimeScale
-} from 'chart.js';
-import 'chartjs-adapter-date-fns'; // Add this import
+import React, { useMemo } from 'react';
+import { Chart as ChartJS, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import 'chartjs-adapter-date-fns';
+import './Timeline.css';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    TimeScale // Register TimeScale
-);
+// Define the plugin outside of the component
+const vintageLabelsPlugin = {
+    id: 'vintageLabels',
+    afterDatasetsDraw(chart, args, options) {
+        console.log('afterDatasetsDraw called');
+
+        const { ctx, chartArea: { top, bottom, left, right, width, height }, scales: { x, y } } = chart;
+
+        if (!ctx) {
+            console.error('Canvas context is not available');
+            return;
+        }
+
+        ctx.save();
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        chart.data.datasets.forEach((dataset, i) => {
+            console.log(`Processing dataset ${i}:`, dataset);
+
+            const meta = chart.getDatasetMeta(i);
+            if (!meta) {
+                console.error(`Dataset meta not found for dataset ${i}`);
+                return;
+            }
+
+            if (!meta.hidden) {
+                meta.data.forEach((element, index) => {
+                    if (index === 0) {  // Only draw label once per vintage
+                        console.log(`Drawing label for dataset ${i}, element ${index}`);
+
+                        if (!element || typeof element.x === 'undefined' || typeof element.y === 'undefined') {
+                            console.error(`Invalid element data for dataset ${i}, element ${index}`);
+                            return;
+                        }
+
+                        const startX = element.x;
+                        const endX = meta.data[1] ? meta.data[1].x : startX;
+                        const midX = (startX + endX) / 2;
+                        const yPos = element.y;
+
+                        // Draw text outline
+                        // ctx.lineWidth = 3;
+                        // ctx.strokeStyle = 'black';
+                        // ctx.strokeText(dataset.vintage, midX, yPos);
+
+                        // Draw text
+                        ctx.fillStyle = 'white';
+                        ctx.fillText(dataset.vintage, midX, yPos);
+
+                        console.log(`Label drawn at (${midX}, ${yPos})`);
+                    }
+                });
+            }
+        });
+
+        ctx.restore();
+    }
+};
+
+// Register the plugin
+ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, vintageLabelsPlugin);
+
+// Define a color palette
+const colorPalette = [
+    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+    '#FF9F40', '#FF6384', '#C9CBCF', '#7BC225', '#B56DFF'
+];
 
 const Timeline = ({ vintages }) => {
-    const startDate = new Date(Math.min(...vintages.flatMap(v => [new Date(v.ivtStart), new Date(v.vtdStart)])));
-    const endDate = new Date(Math.max(...vintages.flatMap(v => [new Date(v.ivtEnd), new Date(v.vtdEnd)])));
+    console.log('Timeline component rendered');
+
+    const excelDateToJSDate = (excelDate) => new Date((excelDate - 25569) * 86400 * 1000);
+
+    // Create a color mapping for vintages
+    const vintageColorMap = useMemo(() => {
+        const uniqueVintages = [...new Set(vintages.map(v => v.vintage))].sort();
+        return Object.fromEntries(uniqueVintages.map((vintage, index) => [vintage, colorPalette[index % colorPalette.length]]));
+    }, [vintages]);
+
+    const processedVintages = vintages.map((v, index) => ({
+        ...v,
+        color: vintageColorMap[v.vintage],
+        ivtStart: excelDateToJSDate(v.ivtStart),
+        ivtEnd: excelDateToJSDate(v.ivtEnd),
+        vtdStart: excelDateToJSDate(v.vtdStart),
+        vtdEnd: excelDateToJSDate(v.vtdEnd)
+    }));
+
+    const startDate = new Date(Math.min(...processedVintages.flatMap(v => [v.ivtStart, v.vtdStart])));
+    const endDate = new Date(Math.max(...processedVintages.flatMap(v => [v.ivtEnd, v.vtdEnd])));
+
+    console.log('Processed vintages:', processedVintages);
 
     const data = {
         datasets: [
-            {
-                label: 'Ideal',
-                data: vintages.map(v => ({
-                    x: [new Date(v.ivtStart), new Date(v.ivtEnd)],
-                    y: v.vintage
-                })),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            },
-            {
-                label: 'Planned',
-                data: vintages.map(v => ({
-                    x: [new Date(v.vtdStart), new Date(v.vtdEnd)],
-                    y: v.vintage
-                })),
-                backgroundColor: 'rgba(255, 159, 64, 0.6)',
-                borderColor: 'rgba(255, 159, 64, 1)',
-                borderWidth: 1
-            }
+            ...processedVintages.map(v => ({
+                label: `Ideal - Vintage ${v.vintage}`,
+                data: [
+                    { x: v.ivtStart, y: 1 },
+                    { x: v.ivtEnd, y: 1 }
+                ],
+                borderColor: v.color,
+                backgroundColor: v.color,
+                borderWidth: 20,
+                pointRadius: 0,
+                vintage: v.vintage
+            })),
+            ...processedVintages.map(v => ({
+                label: `Planned - Vintage ${v.vintage}`,
+                data: [
+                    { x: v.vtdStart, y: 0 },
+                    { x: v.vtdEnd, y: 0 }
+                ],
+                borderColor: v.color,
+                backgroundColor: v.color,
+                borderWidth: 20,
+                pointRadius: 0,
+                vintage: v.vintage
+            }))
         ]
     };
 
+    console.log('Chart data:', data);
+
     const options = {
-        indexAxis: 'y',
         scales: {
             x: {
                 type: 'time',
                 time: {
-                    unit: 'year'
+                    unit: 'year',
+                    displayFormats: {
+                        year: 'yyyy'
+                    }
                 },
                 min: startDate,
-                max: endDate
+                max: endDate,
+                title: {
+                    display: false
+                },
+                grid: {
+                    drawOnChartArea: false
+                }
             },
             y: {
-                beginAtZero: true
+                display: true,
+                min: -0.5,
+                max: 1.5,
+                ticks: {
+                    callback: function (value, index, values) {
+                        if (value === 0) return 'Planned';
+                        if (value === 1) return 'Ideal';
+                        return '';
+                    }
+                },
+                grid: {
+                    drawBorder: false,
+                    drawTicks: false,
+                    drawOnChartArea: false
+                }
             }
         },
         plugins: {
+            legend: {
+                display: false
+            },
             tooltip: {
                 callbacks: {
+                    title: (context) => context[0].dataset.label,
                     label: (context) => {
                         const data = context.raw;
-                        return `${context.dataset.label}: ${data.x[0].toDateString()} - ${data.x[1].toDateString()}`;
+                        return `${data.x.toDateString()}`;
                     }
                 }
-            }
-        }
+            },
+            vintageLabels: {} // This enables the plugin
+        },
+        maintainAspectRatio: false
     };
 
     return (
         <div className="timeline">
-            <Bar data={data} options={options} />
+            <div className="chart-container">
+                <Line data={data} options={options} />
+            </div>
         </div>
     );
 };
