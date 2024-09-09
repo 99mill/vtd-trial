@@ -1,0 +1,22 @@
+.sku-section {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.sku-section h3 {
+    width: 100px;
+    margin: 0;
+    padding-top: 1cqmax;
+    padding-left: 50px;
+    ;
+    flex-shrink: 0;
+    font-style: italic;
+}
+
+.timeline-container {
+    flex-grow: 1;
+    width: calc(100% - 150px);
+    overflow-x: auto;
+}

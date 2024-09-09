@@ -1,0 +1,633 @@
+Folder Structure:
+vtd-trial/
+    notes/
+        notes.txt
+        project-requirements.txt
+    public/
+        index.html
+    src/
+        App.css
+        App.js
+        index.css
+        index.js
+        logo.svg
+        wineData.js
+        components/
+            BrandCard.css
+            BrandCard.js
+            ParentSKUSection.css
+            ParentSKUSection.js
+            Timeline.css
+            Timeline.js
+
+File Contents:
+File: ../../vtd-trial\notes\notes.txt
+--- File Contents Start ---
+# Wine Vintage Transition Visualization Tool - Development Log
+
+## Date: [Current Date]
+
+### Progress Summary
+We have made significant progress in developing the Wine Vintage Transition Visualization Tool. Our focus has shifted from a Python-based solution to a web-based implementation using React, which offers better interactivity and easier integration with modern web technologies.
+
+### Accomplished Tasks
+
+1. **Project Setup**
+   - Initialized a React project structure
+   - Set up basic component hierarchy (App, BrandCard, ParentSKUSection, Timeline)
+
+2. **Data Structure**
+   - Defined a JSON format for storing wine vintage data
+   - Created a mock dataset for development and testing purposes
+
+3. **UI Components**
+   - Implemented BrandCard component to represent each brand
+   - Created ParentSKUSection component to display data for each SKU
+   - Developed a basic Timeline component for visualizing vintage transitions
+
+4. **Timeline Visualization**
+   - Implemented a single x-axis timeline with year markers
+   - Added separate rows for Ideal and Planned vintage transitions
+   - Integrated dynamic positioning of timeline bars based on date ranges
+
+5. **Styling**
+   - Created CSS files for each component (App.css, BrandCard.css, ParentSKUSection.css, Timeline.css)
+   - Implemented responsive design principles for better display across devices
+
+### Current Focus
+- Refining the Timeline component to accurately represent vintage transitions
+- Improving the visual design of the timeline, including color coding for different vintages
+- Ensuring the layout fits well within the ParentSKUSection
+
+### Pending Tasks
+
+1. **Data Input**
+   - Implement Excel file reading functionality (possibly using a backend service or library like SheetJS)
+   - Convert Excel dates to JavaScript Date objects
+
+2. **Data Processing**
+   - Implement grouping by Brand and ParentSKU
+   - Sort vintages chronologically for each product
+
+3. **Interactivity**
+   - Add hover effects to display detailed information about each vintage
+   - Implement zooming and panning for the timeline (if required)
+
+4. **Output Generation**
+   - Develop functionality to export visualizations as static PNG images
+   - Create a method to save the interactive visualization as an HTML file
+
+5. **Performance Optimization**
+   - Test and optimize for handling up to 100 Brand-ParentSKU combinations
+   - Implement lazy loading or pagination if necessary for large datasets
+
+6. **Documentation**
+   - Create a README file with installation and usage instructions
+   - Add inline comments and documentation for key functions
+
+### Next Steps
+1. Complete the refinement of the Timeline component
+2. Implement data input functionality to read from Excel files
+3. Enhance interactivity of the visualization with hover effects and detailed information display
+4. Begin work on the output generation features (PNG export, HTML save)
+
+### Technical Decisions and Rationale
+- Chose React for frontend development due to its component-based architecture and wide community support
+- Decided against using D3.js for now, opting for a simpler CSS-based approach for the initial implementation
+- Kept the option open to integrate D3.js later if more complex visualizations are required
+
+### Challenges and Solutions
+- Challenge: Representing multiple vintages on a single timeline
+  Solution: Implemented separate rows for Ideal and Planned transitions, with color-coding for different vintages
+- Challenge: Dynamically positioning timeline elements
+  Solution: Calculated positions based on date ranges and total timeline width
+
+This development log reflects our current progress and outlines the next steps in the project. We've made significant strides in setting up the basic structure and visualization, but there's still work to be done in terms of data input, processing, and advanced features.
+--- File Contents End ---
+
+File: ../../vtd-trial\notes\project-requirements.txt
+--- File Contents Start ---
+Wine Vintage Transition Visualization Tool
+
+1. Project Overview
+Develop a data visualization tool to display ideal and planned vintage transition timelines for wine products. This tool will help winemakers and product managers visually compare intended versus actual production and selling schedules for different wine vintages.
+
+2. Objectives
+    2.1. Create an easy-to-use visualization of wine vintage transitions.
+    2.2. Enable comparison between ideal and planned transition dates.
+    2.3. Provide a clear view of multiple vintages for each product over time.
+    2.4. Generate both interactive and static visualizations for various use cases.
+
+3. Functional Requirements
+    3.1. Data Input
+        3.1.1. Read data from an Excel file (.xlsx format).
+        3.1.2. Support columns for Brand, ParentSKU, Vintage, IVT_Start, IVT_End, VTD_Start, VTD_End. (IVT = Ideal Vintage Transistion, VTD = Planned Vintage Transition)
+        3.1.3. Handle multiple brands and SKUs in a single file.
+
+    3.2. Data Processing
+        3.2.1. Convert Excel dates to Python datetime objects.
+        3.2.2. Group data by Brand and ParentSKU.
+        3.2.3. Sort vintages chronologically for each product.
+
+    3.3. Visualization Generation
+        3.3.1. Create a timeline for each unique Brand-ParentSKU combination.
+        3.3.2. Display Ideal Vintage Transition (IVT) dates on one timeline.
+        3.3.3. Display Planned Vintage Transition Dates (VTD) on a parallel timeline.
+        3.3.4. Use color coding to distinguish different vintages.
+        3.3.5. Include vintage year labels on timeline bars.
+
+    3.4. Output
+        3.4.1. Generate interactive HTML visualizations.
+        3.4.2. Create static PNG image files of visualizations.
+        3.4.3. Option to display visualizations directly in a web browser.
+
+4. Non-Functional Requirements
+    4.1. Performance
+        4.1.1. Process and generate visualizations for up to 100 Brand-ParentSKU combinations within 60 seconds.
+
+    4.2. Usability
+        4.2.1. Provide clear, legible timelines with appropriate scaling.
+        4.2.2. Ensure interactive elements (e.g., hover information) are intuitive.
+
+    4.3. Compatibility
+        4.3.1. Run on Windows 10 and later versions.
+        4.3.2. Support Python 3.7+.
+
+    4.4. Maintainability
+        4.4.1. Use modular code structure for easy updates and modifications.
+        4.4.2. Include inline comments and documentation for key functions.
+
+5. Technical Specifications
+    5.1. Programming Language: Python 3.7+
+    
+    5.2. Key Libraries:
+        5.2.1. pandas for data manipulation
+        5.2.2. plotly for interactive visualizations
+        5.2.3. openpyxl for Excel file handling
+        5.2.4. kaleido for static image generation
+
+    5.3. Input File Format: .xlsx (Excel)
+
+    5.4. Output Formats: Interactive HTML, Static PNG
+
+6. User Interface
+    6.1. Command-line interface for script execution.
+    6.2. Generated HTML files openable in standard web browsers.
+    6.3. PNG files viewable in any image viewer.
+
+7. Future Enhancements (Optional)
+    7.1. GUI for file selection and parameter adjustment.
+    7.2. Support for additional input file formats (e.g., CSV, JSON).
+    7.3. Customizable color schemes and layout options.
+    7.4. Export options for other visualization formats (e.g., SVG, PDF).
+
+8. Deliverables
+    8.1. Python script for generating visualizations.
+    8.2. README file with installation and usage instructions.
+    8.3. Sample input Excel file for testing and demonstration.
+    8.4. Generated HTML and PNG files for each Brand-ParentSKU combination.
+
+9. Timeline
+[To be determined based on project priorities and resources]
+--- File Contents End ---
+
+File: ../../vtd-trial\public\index.html
+--- File Contents Start ---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
+
+--- File Contents End ---
+
+File: ../../vtd-trial\src\App.css
+--- File Contents Start ---
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+--- File Contents End ---
+
+File: ../../vtd-trial\src\App.js
+--- File Contents Start ---
+import React, { useState, useEffect } from 'react';
+import * as XLSX from 'xlsx';
+import BrandCard from './components/BrandCard';
+
+function App() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const readExcel = async () => {
+      try {
+        console.log('Starting to read Excel file');
+        const response = await fetch('/wine_data.xlsx');
+        console.log('Fetch response:', response);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const arrayBuffer = await response.arrayBuffer();
+        const data = new Uint8Array(arrayBuffer);
+
+        // Explicitly specify the file type
+        const workbook = XLSX.read(data, { type: 'array', cellDates: true, dateNF: 'yyyy-mm-dd' });
+
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false, dateNF: 'yyyy-mm-dd' });
+
+        const processedData = jsonData.reduce((acc, row) => {
+          const { Brand, ParentSKU, Vint, IVT_Start, IVT_End, VTD_Start, VTD_End } = row;
+
+          if (!acc[Brand]) {
+            acc[Brand] = {};
+          }
+          if (!acc[Brand][ParentSKU]) {
+            acc[Brand][ParentSKU] = [];
+          }
+
+          acc[Brand][ParentSKU].push({
+            vintage: Vint,
+            ivtStart: IVT_Start,
+            ivtEnd: IVT_End,
+            vtdStart: VTD_Start,
+            vtdEnd: VTD_End
+          });
+
+          return acc;
+        }, {});
+
+        console.log('Processed data:', processedData);
+        setData(processedData);
+      } catch (error) {
+        console.error('Error reading Excel file:', error);
+        setError('Error reading Excel file. Please check if the file exists in the public folder and try again.');
+      }
+    };
+
+    readExcel();
+  }, []);
+
+  console.log('Rendering App, data:', data);
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
+  return (
+    <div className="app">
+      <h1>Wine Vintage Transition Visualization</h1>
+      {data && Object.entries(data).map(([brand, skus]) => (
+        <BrandCard key={brand} brand={brand} skus={skus} />
+      ))}
+    </div>
+  );
+}
+
+export default App;
+--- File Contents End ---
+
+File: ../../vtd-trial\src\index.css
+--- File Contents Start ---
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+--- File Contents End ---
+
+File: ../../vtd-trial\src\index.js
+--- File Contents Start ---
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+--- File Contents End ---
+
+File: ../../vtd-trial\src\logo.svg
+--- File Contents Start ---
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3"><g fill="#61DAFB"><path d="M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z"/><circle cx="420.9" cy="296.5" r="45.7"/><path d="M520.5 78.1z"/></g></svg>
+--- File Contents End ---
+
+File: ../../vtd-trial\src\wineData.js
+--- File Contents Start ---
+import * as XLSX from 'xlsx';
+
+export const processExcelFile = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const bstr = event.target.result;
+                const workbook = XLSX.read(bstr, { type: 'binary' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                const processedData = jsonData.reduce((acc, row) => {
+                    const { Brand, ParentSKU, Vint, IVT_Start, IVT_End, VTD_Start, VTD_End } = row;
+
+                    if (!acc[Brand]) {
+                        acc[Brand] = {};
+                    }
+                    if (!acc[Brand][ParentSKU]) {
+                        acc[Brand][ParentSKU] = [];
+                    }
+
+                    // Convert Excel date serial number to JS Date
+                    const convertExcelDate = (serialNumber) => {
+                        return new Date((serialNumber - 25569) * 86400 * 1000).toISOString().split('T')[0];
+                    };
+
+                    acc[Brand][ParentSKU].push({
+                        vintage: Vint,
+                        ivtStart: convertExcelDate(IVT_Start),
+                        ivtEnd: convertExcelDate(IVT_End),
+                        vtdStart: convertExcelDate(VTD_Start),
+                        vtdEnd: convertExcelDate(VTD_End)
+                    });
+
+                    return acc;
+                }, {});
+
+                resolve(processedData);
+            } catch (error) {
+                reject(new Error('Error processing Excel file: ' + error.message));
+            }
+        };
+        reader.onerror = (error) => {
+            reject(new Error('Error reading file: ' + error.message));
+        };
+        reader.readAsBinaryString(file);
+    });
+};
+--- File Contents End ---
+
+File: ../../vtd-trial\src\components\BrandCard.css
+--- File Contents Start ---
+.brand-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+--- File Contents End ---
+
+File: ../../vtd-trial\src\components\BrandCard.js
+--- File Contents Start ---
+import React from 'react';
+import ParentSKUSection from './ParentSKUSection';
+import './BrandCard.css';
+
+
+function BrandCard({ brand, skus }) {
+    return (
+        <div className="brand-card">
+            <h2>{brand}</h2>
+            {Object.entries(skus).map(([sku, vintages]) => (
+                <ParentSKUSection key={sku} sku={sku} vintages={vintages} />
+            ))}
+        </div>
+    );
+}
+
+export default BrandCard;
+
+--- File Contents End ---
+
+File: ../../vtd-trial\src\components\ParentSKUSection.css
+--- File Contents Start ---
+.sku-section {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.sku-section h3 {
+    width: 150px;
+    margin: 0;
+    padding-top: 1cqmax;
+    flex-shrink: 0;
+}
+
+.timeline-container {
+    flex-grow: 1;
+    width: calc(100% - 150px);
+    overflow-x: auto;
+}
+--- File Contents End ---
+
+File: ../../vtd-trial\src\components\ParentSKUSection.js
+--- File Contents Start ---
+import React from 'react';
+import Timeline from './Timeline';
+import './ParentSKUSection.css';
+
+function ParentSKUSection({ sku, vintages }) {
+    return (
+        <div className="sku-section">
+            <h3>{sku}</h3>
+            <div className="timeline-container">
+                <Timeline vintages={vintages} />
+            </div>
+        </div>
+    );
+}
+
+export default ParentSKUSection;
+--- File Contents End ---
+
+File: ../../vtd-trial\src\components\Timeline.css
+--- File Contents Start ---
+.timeline {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 20px;
+    min-width: 300px;
+}
+--- File Contents End ---
+
+File: ../../vtd-trial\src\components\Timeline.js
+--- File Contents Start ---
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    TimeScale
+} from 'chart.js';
+import 'chartjs-adapter-date-fns'; // Add this import
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    TimeScale // Register TimeScale
+);
+
+const Timeline = ({ vintages }) => {
+    const startDate = new Date(Math.min(...vintages.flatMap(v => [new Date(v.ivtStart), new Date(v.vtdStart)])));
+    const endDate = new Date(Math.max(...vintages.flatMap(v => [new Date(v.ivtEnd), new Date(v.vtdEnd)])));
+
+    const data = {
+        datasets: [
+            {
+                label: 'Ideal',
+                data: vintages.map(v => ({
+                    x: [new Date(v.ivtStart), new Date(v.ivtEnd)],
+                    y: v.vintage
+                })),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Planned',
+                data: vintages.map(v => ({
+                    x: [new Date(v.vtdStart), new Date(v.vtdEnd)],
+                    y: v.vintage
+                })),
+                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const options = {
+        indexAxis: 'y',
+        scales: {
+            x: {
+                type: 'time',
+                time: {
+                    unit: 'year'
+                },
+                min: startDate,
+                max: endDate
+            },
+            y: {
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: (context) => {
+                        const data = context.raw;
+                        return `${context.dataset.label}: ${data.x[0].toDateString()} - ${data.x[1].toDateString()}`;
+                    }
+                }
+            }
+        }
+    };
+
+    return (
+        <div className="timeline">
+            <Bar data={data} options={options} />
+        </div>
+    );
+};
+
+export default Timeline;
+--- File Contents End ---
+
